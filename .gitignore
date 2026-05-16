@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.vite/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!apps/**/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Prisma / SQLite local data
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+apps/api/prisma/dev.db
+
+# Generated semantic web data
+rdf/*.ttl
+rdf/*.nt
+rdf/*.rdf
+!rdf/.gitkeep
+
+# Coverage and caches
+coverage/
+.turbo/
+.cache/
