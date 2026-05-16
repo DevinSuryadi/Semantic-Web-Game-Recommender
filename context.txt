@@ -1,0 +1,283 @@
+Saya sedang mengerjakan proyek tugas akhir mata kuliah Semantic Web.
+
+Judul proyek:
+GameFeel: Sistem Rekomendasi Game Berdasarkan Kemiripan Semantik Menggunakan RDF, Ontology, dan SPARQL.
+
+Deskripsi proyek:
+Saya ingin membangun sistem rekomendasi game yang tidak hanya berdasarkan genre, rating, popularitas, atau platform, tetapi berdasarkan kemiripan semantik atau “feel” dari sebuah game. Sistem ini akan membantu pengguna menemukan game lain yang memiliki nuansa permainan, suasana, tema, mekanik gameplay, mode bermain, subgenre, gaya combat, perspektif kamera, tingkat kesulitan, pacing, platform, dan art style yang mirip dengan game yang dipilih.
+
+Contoh:
+Jika pengguna menyukai Elden Ring, sistem tidak hanya mencari game bergenre Action RPG atau Open World, tetapi juga mencari game dengan karakteristik seperti dark fantasy, challenging combat, exploration, boss fight, mysterious world, high difficulty, dan atmospheric experience.
+
+Komponen utama proyek:
+1. Mengambil data game dari RAWG API.
+2. Menyimpan data mentah dan data hasil cleaning ke staging lokal menggunakan Prisma.
+3. Membangun ontology untuk domain rekomendasi game.
+4. Mengonversi data game ke RDF/Turtle.
+5. Mengunggah RDF ke Apache Jena Fuseki sebagai SPARQL Endpoint.
+6. Membuat query SPARQL untuk pencarian dan rekomendasi game.
+7. Membuat backend API untuk menghubungkan frontend dengan Fuseki dan data staging jika diperlukan.
+8. Membuat frontend React untuk pencarian game, detail game, rekomendasi game serupa, similarity score, dan alasan rekomendasi.
+
+Catatan penting:
+- Saya tidak ingin menggunakan Streamlit.
+- Saya ingin menggunakan React + TypeScript.
+- Saya ingin menggunakan pnpm.
+- Saya ingin menggunakan Prisma.
+- Prisma hanya digunakan sebagai database staging atau penyimpanan data aplikasi.
+- Prisma tidak menggantikan RDF, ontology, atau Fuseki.
+- Fuseki tetap digunakan sebagai SPARQL Endpoint utama.
+- Saya tidak menggunakan Supabase.
+- Saat deploy, data utama untuk rekomendasi tetap diambil dari Jena Fuseki.
+- Fokus deployment adalah aplikasi yang membaca RDF/SPARQL dari Fuseki, bukan sinkronisasi ke database cloud tambahan.
+- Fokus utama proyek tetap Semantic Web, RDF, Ontology, SPARQL, Knowledge Graph, dan explainable recommendation.
+- Sistem tidak menggunakan machine learning kompleks.
+
+Stack teknologi:
+- Frontend: React + TypeScript + Vite
+- Package manager: pnpm
+- Backend: Node.js + TypeScript + Express
+- ORM/staging data: Prisma + SQLite untuk awal
+- RDF generation: TypeScript script, dapat menggunakan library N3 atau generate Turtle secara manual
+- Ontology: TTL/OWL manual atau Protégé
+- SPARQL Endpoint: Apache Jena Fuseki
+- Data source: RAWG API
+
+Data dari RAWG API:
+- id
+- name / title
+- slug
+- released
+- genres
+- platforms
+- developers
+- publishers
+- rating
+- metacritic
+- playtime
+- tags
+- description
+- background_image
+
+Atribut semantik utama:
+- mood
+- theme
+- gameplay mechanic
+- game mode
+- subgenre
+- combat style
+- perspective
+- difficulty
+- pacing
+- art style
+- quality tier 
+
+Definisi feel:
+- Feel game direpresentasikan sebagai gabungan beberapa dimensi, bukan satu label tunggal.
+- Mood menggambarkan atmosfer emosional.
+- Theme menggambarkan konteks naratif atau setting.
+- GameplayMechanic menggambarkan aksi inti pemain.
+- GameMode menggambarkan pola interaksi pemain.
+- SubGenre menggambarkan label genre-spesifik seperti FPS, MOBA, atau Roguelike.
+- CombatStyle menggambarkan pola tempur seperti Turn-Based atau Real-Time.
+- Perspective menggambarkan sudut pandang bermain seperti First-Person atau Isometric.
+- QualityTier hanya dipakai sebagai metadata tambahan bila diperlukan.
+
+Kamus semantik final:
+- Mood: Dark, Cozy, Relaxing, Tense, Emotional, Mysterious, Lonely, Epic, Chaotic, Melancholic, Hopeful, Tragic, Ominous, Eerie, Intense, Chill, Heroic, Grim.
+- Theme: Exploration, Survival, Isolation, Friendship, Revenge, Mystery, Post-apocalypse, War, Self-growth, Death, Fantasy, Dark Fantasy, Cyberpunk, Horror, Adventure, Sci-fi, Mythology, Military, Nature, Supernatural.
+- GameplayMechanic: Exploration, Boss Fight, Platforming, Crafting, Puzzle Solving, Stealth, Open World, Turn-based Combat, Real-time Combat, Resource Management, Precision Platforming, Combat, Survival, Base Building, Shooting, Looting, Procedural Generation, Permadeath, Deck Building, Farming, Parkour.
+- GameMode: Singleplayer, Multiplayer, Co-op, Online Co-op, Local Co-op, PvP, PvE, MMO, Team-based.
+- SubGenre: FPS, TPS, MOBA, Roguelike, Roguelite, Metroidvania, Battle Royale, Survival Horror, Tactical RPG, JRPG, CRPG, Racing, Fighting, Sandbox, Strategy, RTS, Tower Defense, Visual Novel, Simulation, Card Game, Sports.
+- CombatStyle: Turn-Based, Real-Time, Tactical, Shooter, Hack and Slash, Bullet Hell, Action, Auto Battler.
+- Perspective: First-Person, Third-Person, Top-Down, Isometric, Side-Scrolling, Overhead.
+- Difficulty: Easy, Medium, Hard, Very Hard.
+- Pacing: Slow, Medium, Fast.
+- ArtStyle: Pixel Art, Hand-drawn, Realistic, Anime, Low Poly, Cartoon, Stylized, Isometric, Retro, Voxel, Comic Book, Neon, Minimalist.
+- QualityTier: Poor, Fair, Good, Very Good, Excellent.
+
+Aturan kamus:
+- Setiap game boleh memiliki lebih dari satu nilai untuk Mood, Theme, GameplayMechanic, GameMode, SubGenre, CombatStyle, Perspective, dan Tag.
+- Difficulty, Pacing, ArtStyle, dan QualityTier dibatasi pada nilai yang paling relevan.
+- Jika suatu istilah tidak cocok dengan kamus final, istilah itu tetap disimpan sebagai Tag, bukan dipaksa masuk ke kelas semantik lain.
+- Semua nilai semantik direpresentasikan sebagai individu/instance pada class masing-masing, bukan free text.
+- Label seperti Positive, Very Positive, Mixed, atau Similar tidak dipakai jika hanya memakai RAWG. Jika ingin penilaian kualitas, gunakan QualityTier yang diturunkan dari rating/metacritic.
+
+Class ontology:
+- Game
+- Genre
+- SubGenre
+- Platform
+- Developer
+- Publisher
+- Mood
+- Theme
+- GameplayMechanic
+- GameMode
+- CombatStyle
+- Perspective
+- Difficulty
+- Pacing
+- ArtStyle
+- QualityTier
+- Tag
+
+Aturan pemetaan RAWG ke atribut semantik:
+- `genres` dipetakan langsung ke class Genre dan, bila relevan, ke SubGenre.
+- `platforms` dipetakan langsung ke class Platform.
+- `developers` dipetakan langsung ke class Developer.
+- `publishers` dipetakan langsung ke class Publisher.
+- `tags` adalah sumber utama untuk Mood, Theme, GameplayMechanic, GameMode, SubGenre, CombatStyle, Perspective, Difficulty, Pacing, ArtStyle, QualityTier, dan Tag.
+- `description` menjadi sumber pendukung untuk inferensi berbasis kata kunci jika tags terlalu umum atau tidak lengkap.
+- `rating`, `metacritic`, dan `playtime` tetap menjadi data properties serta ranking metadata, bukan label semantik.
+- Jika dibutuhkan kategori kualitas, turunkan dari rating/metacritic menjadi QualityTier.
+- `background_image` dipetakan ke imageUrl.
+- `id`, `slug`, `released`, dan `name/title` dipakai sebagai identitas dan metadata game.
+
+Aturan inferensi kata kunci:
+- `souls-like`, `challenging`, `difficult`, `punishing` -> Mood Dark atau Tense, Difficulty Hard atau Very Hard, GameplayMechanic Boss Fight atau Combat.
+- `exploration`, `open world`, `adventure` -> Theme Exploration atau Adventure, GameplayMechanic Exploration atau Open World.
+- `survival`, `resource management`, `crafting` -> Theme Survival, GameplayMechanic Survival, Resource Management, atau Crafting.
+- `multiplayer`, `online co-op`, `local co-op`, `pvp`, `pve`, `mmo`, `co-op` -> GameMode Multiplayer, Co-op, Online Co-op, Local Co-op, PvP, PvE, atau MMO.
+- `fps`, `first person shooter`, `first-person` -> SubGenre FPS, Perspective First-Person, dan CombatStyle Shooter.
+- `tps`, `third person shooter`, `third-person` -> SubGenre TPS, Perspective Third-Person, dan CombatStyle Shooter.
+- `moba` -> SubGenre MOBA, GameMode Multiplayer, CombatStyle Real-Time, dan Perspective Top-Down bila relevan.
+- `roguelike`, `roguelite` -> SubGenre Roguelike atau Roguelite, GameplayMechanic Procedural Generation, dan Permadeath.
+- `turn-based`, `turn base`, `turnbased` -> CombatStyle Turn-Based dan GameplayMechanic Turn-based Combat.
+- `real-time`, `action combat` -> CombatStyle Real-Time.
+- `strategy`, `rts`, `tactical` -> SubGenre Strategy, RTS, atau Tactical RPG, dan CombatStyle Tactical atau Real-Time.
+- `metroidvania` -> SubGenre Metroidvania, GameplayMechanic Exploration, dan Platforming.
+- `battle royale` -> SubGenre Battle Royale dan GameMode Multiplayer.
+- `stealth` -> GameplayMechanic Stealth dan Mood Tense.
+- `puzzle` -> GameplayMechanic Puzzle Solving.
+- `platformer` -> GameplayMechanic Platforming atau Precision Platforming.
+- `first person`, `third person`, `isometric`, `top down`, `side scrolling`, `overhead` -> Perspective.
+- `pixel art` dan `retro` -> ArtStyle Pixel Art atau Retro.
+- `hand-drawn` atau `drawn` -> ArtStyle Hand-drawn.
+- `anime` -> ArtStyle Anime.
+- `realistic` atau `photorealistic` -> ArtStyle Realistic.
+- `low poly` -> ArtStyle Low Poly.
+- `stylized` -> ArtStyle Stylized.
+- `voxel` -> ArtStyle Voxel.
+- `comic`, `comic book` -> ArtStyle Comic Book.
+- `neon`, `cyberpunk neon` -> ArtStyle Neon.
+- `minimalist` -> ArtStyle Minimalist.
+- `dark fantasy`, `gothic`, `grim` -> Theme Dark Fantasy atau Gothic Horror, Mood Dark.
+- `cyberpunk`, `sci-fi dystopia` -> Theme Cyberpunk.
+- `horror`, `fear`, `terror` -> Theme Horror, Mood Tense atau Mysterious.
+- `mystery`, `mysterious` -> Mood Mysterious dan Theme Mystery.
+- `lonely`, `isolation` -> Mood Lonely dan Theme Isolation.
+
+Aturan implementasi:
+- Gunakan urutan prioritas tag > description > genre inference.
+- Simpan asal mapping untuk setiap nilai semantik agar alasan rekomendasi bisa dijelaskan.
+- Jika satu game cocok dengan terlalu banyak label, pilih nilai yang paling kuat dan paling stabil untuk similarity score.
+
+Object properties:
+- hasGenre
+- hasSubGenre
+- availableOn
+- developedBy
+- publishedBy
+- hasMood
+- hasTheme
+- hasMechanic
+- hasMode
+- hasCombatStyle
+- hasPerspective
+- hasDifficulty
+- hasPacing
+- hasArtStyle
+- hasQualityTier
+- hasTag
+
+Data properties:
+- title
+- slug
+- releaseDate
+- rating
+- metacriticScore
+- playtime
+- description
+- imageUrl
+
+Metode rekomendasi:
+Sistem mencari kesamaan atribut semantik antar game menggunakan RDF dan SPARQL. Similarity score dihitung berdasarkan kesamaan genre, subgenre, mood, theme, gameplay mechanic, game mode, combat style, perspective, difficulty, pacing, art style, platform, tag, dan quality tier jika diperlukan.
+
+Bobot similarity score:
+- Genre sama: +3
+- SubGenre sama: +3
+- Mood sama: +2
+- Theme sama: +2
+- Gameplay mechanic sama: +2
+- GameMode sama: +2
+- CombatStyle sama: +2
+- Difficulty sama: +1
+- Pacing sama: +1
+- Perspective sama: +1
+- Art style sama: +1
+- Platform sama: +1
+- Tag sama: +1
+- QualityTier sama: +1 (opsional, hanya sebagai tiebreaker)
+
+Contoh hasil rekomendasi:
+Input: Elden Ring
+
+Rekomendasi:
+1. Dark Souls III
+   Alasan: sama-sama memiliki genre Action RPG, mood Dark, mekanik Boss Fight, tingkat kesulitan Hard, dan dikembangkan oleh FromSoftware.
+
+2. Bloodborne
+   Alasan: sama-sama memiliki suasana Dark, gameplay menantang, mekanik Boss Fight, dan tema Gothic Horror.
+
+3. The Witcher 3
+   Alasan: sama-sama memiliki genre RPG, dunia eksploratif, tema Fantasy, dan elemen Open World.
+
+Struktur folder:
+gamefeel-kg/
+│
+├── apps/
+│   ├── web/
+│   │   └── React + TypeScript frontend
+│   │
+│   └── api/
+│       ├── Express backend
+│       ├── Prisma
+│       ├── RAWG fetch service
+│       ├── SPARQL service
+│       └── recommendation service
+│
+├── ontology/
+│   └── gamefeel_ontology.ttl
+│
+├── rdf/
+│   └── gamefeel_data.ttl
+│
+├── sparql/
+│   ├── search_game.rq
+│   ├── game_detail.rq
+│   └── recommend_by_game.rq
+│
+├── pnpm-workspace.yaml
+└── package.json
+
+Alur pengerjaan:
+1. Setup monorepo dengan pnpm.
+2. Setup React + TypeScript frontend.
+3. Setup Node.js + TypeScript backend.
+4. Setup Prisma + SQLite.
+5. Buat model database untuk menyimpan data game RAWG.
+6. Buat script fetch data dari RAWG API.
+7. Simpan data hasil fetch ke database Prisma.
+8. Bersihkan dan normalisasi data.
+9. Buat ontology dalam format TTL.
+10. Generate RDF/Turtle dari data game.
+11. Jalankan Apache Jena Fuseki.
+12. Upload file ontology dan RDF ke Fuseki.
+13. Buat query SPARQL untuk pencarian dan rekomendasi.
+14. Buat API backend untuk search game, detail game, dan rekomendasi.
+15. Buat frontend React untuk menampilkan hasil.
+16. Tambahkan fitur similarity score dan why recommended.
+17. Susun laporan akhir.
+
+Tolong bantu saya mengerjakan proyek ini secara bertahap. Gunakan bahasa Indonesia yang formal, jelas, dan praktis. Jangan menyarankan Streamlit. Jangan mengalihkan fokus ke machine learning kompleks.
