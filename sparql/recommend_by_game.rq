@@ -1,0 +1,139 @@
+PREFIX gf: <http://example.org/gamefeel#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT
+  ?game
+  ?title
+  ?slug
+  ?imageUrl
+  (SUM(?weight) AS ?score)
+  (GROUP_CONCAT(DISTINCT ?reason; separator=" | ") AS ?reasons)
+WHERE {
+  ?input a gf:Game ;
+    gf:slug ?inputSlug .
+
+  VALUES ?inputSlug { "elden-ring" }
+
+  ?game a gf:Game ;
+    gf:title ?title ;
+    gf:slug ?slug .
+
+  OPTIONAL { ?game gf:imageUrl ?imageUrl . }
+
+  FILTER(?game != ?input)
+
+  {
+    ?input gf:hasGenre ?shared .
+    ?game gf:hasGenre ?shared .
+    ?shared rdfs:label ?label .
+    BIND(3 AS ?weight)
+    BIND(CONCAT("Genre: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasSubGenre ?shared .
+    ?game gf:hasSubGenre ?shared .
+    ?shared rdfs:label ?label .
+    BIND(3 AS ?weight)
+    BIND(CONCAT("SubGenre: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasMood ?shared .
+    ?game gf:hasMood ?shared .
+    ?shared rdfs:label ?label .
+    BIND(2 AS ?weight)
+    BIND(CONCAT("Mood: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasTheme ?shared .
+    ?game gf:hasTheme ?shared .
+    ?shared rdfs:label ?label .
+    BIND(2 AS ?weight)
+    BIND(CONCAT("Theme: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasMechanic ?shared .
+    ?game gf:hasMechanic ?shared .
+    ?shared rdfs:label ?label .
+    BIND(2 AS ?weight)
+    BIND(CONCAT("Mechanic: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasMode ?shared .
+    ?game gf:hasMode ?shared .
+    ?shared rdfs:label ?label .
+    BIND(2 AS ?weight)
+    BIND(CONCAT("Mode: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasCombatStyle ?shared .
+    ?game gf:hasCombatStyle ?shared .
+    ?shared rdfs:label ?label .
+    BIND(2 AS ?weight)
+    BIND(CONCAT("CombatStyle: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasDifficulty ?shared .
+    ?game gf:hasDifficulty ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("Difficulty: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasPacing ?shared .
+    ?game gf:hasPacing ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("Pacing: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasPerspective ?shared .
+    ?game gf:hasPerspective ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("Perspective: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasArtStyle ?shared .
+    ?game gf:hasArtStyle ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("ArtStyle: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:availableOn ?shared .
+    ?game gf:availableOn ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("Platform: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasQualityTier ?shared .
+    ?game gf:hasQualityTier ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("QualityTier: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasTag ?shared .
+    ?game gf:hasTag ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("Tag: ", STR(?label)) AS ?reason)
+  }
+}
+GROUP BY ?game ?title ?slug ?imageUrl
+ORDER BY DESC(?score) LCASE(STR(?title))
+LIMIT 10

@@ -1,0 +1,186 @@
+@prefix gf: <http://example.org/gamefeel#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+gf:GameFeelOntology a owl:Ontology ;
+  rdfs:label "GameFeel KG ontology" ;
+  rdfs:comment "Ontology for semantic game recommendation based on game feel, RDF, and SPARQL." .
+
+gf:Game a owl:Class ;
+  rdfs:label "Game" .
+
+gf:Genre a owl:Class ;
+  rdfs:label "Genre" .
+
+gf:SubGenre a owl:Class ;
+  rdfs:label "Sub Genre" .
+
+gf:Platform a owl:Class ;
+  rdfs:label "Platform" .
+
+gf:Developer a owl:Class ;
+  rdfs:label "Developer" .
+
+gf:Publisher a owl:Class ;
+  rdfs:label "Publisher" .
+
+gf:Mood a owl:Class ;
+  rdfs:label "Mood" .
+
+gf:Theme a owl:Class ;
+  rdfs:label "Theme" .
+
+gf:GameplayMechanic a owl:Class ;
+  rdfs:label "Gameplay Mechanic" .
+
+gf:GameMode a owl:Class ;
+  rdfs:label "Game Mode" .
+
+gf:CombatStyle a owl:Class ;
+  rdfs:label "Combat Style" .
+
+gf:Perspective a owl:Class ;
+  rdfs:label "Perspective" .
+
+gf:Difficulty a owl:Class ;
+  rdfs:label "Difficulty" .
+
+gf:Pacing a owl:Class ;
+  rdfs:label "Pacing" .
+
+gf:ArtStyle a owl:Class ;
+  rdfs:label "Art Style" .
+
+gf:QualityTier a owl:Class ;
+  rdfs:label "Quality Tier" .
+
+gf:Tag a owl:Class ;
+  rdfs:label "Tag" .
+
+gf:hasGenre a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Genre ;
+  rdfs:label "has genre" .
+
+gf:hasSubGenre a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:SubGenre ;
+  rdfs:label "has subgenre" .
+
+gf:availableOn a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Platform ;
+  rdfs:label "available on" .
+
+gf:developedBy a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Developer ;
+  rdfs:label "developed by" .
+
+gf:publishedBy a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Publisher ;
+  rdfs:label "published by" .
+
+gf:hasMood a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Mood ;
+  rdfs:label "has mood" .
+
+gf:hasTheme a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Theme ;
+  rdfs:label "has theme" .
+
+gf:hasMechanic a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:GameplayMechanic ;
+  rdfs:label "has mechanic" .
+
+gf:hasMode a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:GameMode ;
+  rdfs:label "has mode" .
+
+gf:hasCombatStyle a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:CombatStyle ;
+  rdfs:label "has combat style" .
+
+gf:hasPerspective a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Perspective ;
+  rdfs:label "has perspective" .
+
+gf:hasDifficulty a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Difficulty ;
+  rdfs:label "has difficulty" .
+
+gf:hasPacing a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Pacing ;
+  rdfs:label "has pacing" .
+
+gf:hasArtStyle a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:ArtStyle ;
+  rdfs:label "has art style" .
+
+gf:hasQualityTier a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:QualityTier ;
+  rdfs:label "has quality tier" .
+
+gf:hasTag a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Tag ;
+  rdfs:label "has tag" .
+
+gf:rawgId a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:integer ;
+  rdfs:label "RAWG ID" .
+
+gf:title a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:string ;
+  rdfs:label "title" .
+
+gf:slug a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:string ;
+  rdfs:label "slug" .
+
+gf:releaseDate a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:date ;
+  rdfs:label "release date" .
+
+gf:rating a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "rating" .
+
+gf:metacriticScore a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:integer ;
+  rdfs:label "metacritic score" .
+
+gf:playtime a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:integer ;
+  rdfs:label "playtime" .
+
+gf:description a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:string ;
+  rdfs:label "description" .
+
+gf:imageUrl a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:anyURI ;
+  rdfs:label "image URL" .
+

@@ -1,0 +1,14 @@
+PREFIX gf: <http://example.org/gamefeel#>
+
+SELECT ?game ?title ?slug ?imageUrl
+WHERE {
+  ?game a gf:Game ;
+    gf:title ?title ;
+    gf:slug ?slug .
+
+  OPTIONAL { ?game gf:imageUrl ?imageUrl . }
+
+  FILTER(CONTAINS(LCASE(STR(?title)), LCASE("elden")))
+}
+ORDER BY LCASE(STR(?title))
+LIMIT 20

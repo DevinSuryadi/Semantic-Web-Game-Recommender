@@ -7,7 +7,10 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "rawg:fetch": "tsx src/scripts/fetchRawgGames.ts",
-    "rawg:to-csv": "tsx src/scripts/exportRawgToCsv.ts"
+    "rawg:to-csv": "tsx src/scripts/exportRawgToCsv.ts",
+    "ontology:generate": "tsx src/scripts/generateOntology.ts",
+    "rdf:generate": "tsx src/scripts/generateRdf.ts",
+    "fuseki:upload": "tsx src/scripts/uploadFuseki.ts"
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
