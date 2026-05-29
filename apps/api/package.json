@@ -6,7 +6,8 @@
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "rawg:fetch": "tsx src/scripts/fetchRawgGames.ts"
+    "rawg:fetch": "tsx src/scripts/fetchRawgGames.ts",
+    "rawg:to-csv": "tsx src/scripts/exportRawgToCsv.ts"
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
