@@ -22,7 +22,7 @@ model RawgGame {
   developersJson String    @default("[]")
   publishersJson String    @default("[]")
   tagsJson       String    @default("[]")
-  rawJson        String
+  rawJson        String    @default("{}")
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
