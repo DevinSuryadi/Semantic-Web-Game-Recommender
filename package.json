@@ -1,0 +1,15 @@
+{
+  "name": "gamefeel-kg",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "db:generate": "pnpm --filter @gamefeel/api db:generate",
+    "db:push": "pnpm --filter @gamefeel/api db:push",
+    "rawg:fetch": "pnpm --filter @gamefeel/api rawg:fetch",
+    "rawg:to-csv": "pnpm --filter @gamefeel/api rawg:to-csv"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}
