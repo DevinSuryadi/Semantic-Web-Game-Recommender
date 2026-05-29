@@ -1,0 +1,122 @@
+@prefix gf: <http://example.org/gamefeel#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+gf:GameFeelOntology a owl:Ontology ;
+  rdfs:label "GameFeel ontology" .
+
+gf:Game a owl:Class .
+gf:Genre a owl:Class .
+gf:SubGenre a owl:Class .
+gf:Platform a owl:Class .
+gf:Developer a owl:Class .
+gf:Publisher a owl:Class .
+gf:Mood a owl:Class .
+gf:Theme a owl:Class .
+gf:GameplayMechanic a owl:Class .
+gf:GameMode a owl:Class .
+gf:CombatStyle a owl:Class .
+gf:Perspective a owl:Class .
+gf:Difficulty a owl:Class .
+gf:Pacing a owl:Class .
+gf:ArtStyle a owl:Class .
+gf:QualityTier a owl:Class .
+gf:Tag a owl:Class .
+
+gf:hasGenre a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Genre .
+
+gf:hasSubGenre a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:SubGenre .
+
+gf:availableOn a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Platform .
+
+gf:developedBy a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Developer .
+
+gf:publishedBy a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Publisher .
+
+gf:hasMood a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Mood .
+
+gf:hasTheme a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Theme .
+
+gf:hasMechanic a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:GameplayMechanic .
+
+gf:hasMode a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:GameMode .
+
+gf:hasCombatStyle a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:CombatStyle .
+
+gf:hasPerspective a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Perspective .
+
+gf:hasDifficulty a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Difficulty .
+
+gf:hasPacing a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Pacing .
+
+gf:hasArtStyle a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:ArtStyle .
+
+gf:hasQualityTier a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:QualityTier .
+
+gf:hasTag a owl:ObjectProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range gf:Tag .
+
+gf:title a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:string .
+
+gf:slug a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:string .
+
+gf:releaseDate a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:date .
+
+gf:rating a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:decimal .
+
+gf:metacriticScore a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:integer .
+
+gf:playtime a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:integer .
+
+gf:description a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:string .
+
+gf:imageUrl a owl:DatatypeProperty ;
+  rdfs:domain gf:Game ;
+  rdfs:range xsd:anyURI .

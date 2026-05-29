@@ -1,0 +1,28 @@
+{
+  "name": "@gamefeel/api",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc --project tsconfig.json",
+    "start": "node dist/server.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "seed:10": "tsx src/scripts/seedTenGames.ts",
+    "rdf:10": "tsx src/scripts/generateRdf.ts",
+    "recommend:preview": "tsx src/scripts/previewRecommendations.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "dotenv": "16.6.1",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "24.12.4",
+    "prisma": "6.19.3",
+    "tsx": "4.22.0",
+    "typescript": "5.9.3"
+  }
+}

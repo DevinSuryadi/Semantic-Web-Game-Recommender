@@ -1,0 +1,20 @@
+{
+  "name": "gamefeel-kg",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @gamefeel/api --filter @gamefeel/web dev",
+    "dev:api": "pnpm --filter @gamefeel/api dev",
+    "dev:web": "pnpm --filter @gamefeel/web dev",
+    "build": "pnpm --filter @gamefeel/api build && pnpm --filter @gamefeel/web build",
+    "db:generate": "pnpm --filter @gamefeel/api db:generate",
+    "db:push": "pnpm --filter @gamefeel/api db:push",
+    "seed:10": "pnpm --filter @gamefeel/api seed:10",
+    "rdf:10": "pnpm --filter @gamefeel/api rdf:10",
+    "recommend:preview": "pnpm --filter @gamefeel/api recommend:preview"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}

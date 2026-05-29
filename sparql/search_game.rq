@@ -1,0 +1,12 @@
+PREFIX gf: <http://example.org/gamefeel#>
+
+SELECT ?game ?title ?slug
+WHERE {
+  ?game a gf:Game ;
+    gf:title ?title ;
+    gf:slug ?slug .
+
+  FILTER(CONTAINS(LCASE(?title), LCASE("elden")))
+}
+ORDER BY ?title
+LIMIT 10

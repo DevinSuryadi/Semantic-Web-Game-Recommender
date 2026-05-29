@@ -1,0 +1,17 @@
+PREFIX gf: <http://example.org/gamefeel#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?game ?title ?slug ?predicate ?valueLabel
+WHERE {
+  ?game a gf:Game ;
+    gf:title ?title ;
+    gf:slug ?slug .
+
+  VALUES ?slug { "elden-ring" }
+
+  ?game ?predicate ?value .
+  OPTIONAL { ?value rdfs:label ?label . }
+
+  BIND(COALESCE(?label, STR(?value)) AS ?valueLabel)
+}
+ORDER BY ?predicate ?valueLabel
