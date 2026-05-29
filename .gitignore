@@ -37,6 +37,7 @@ rdf/*.ttl
 rdf/*.nt
 rdf/*.rdf
 !rdf/.gitkeep
+!rdf/gamefeel_data.ttl
 
 # Coverage and caches
 coverage/
