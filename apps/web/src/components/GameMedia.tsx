@@ -1,6 +1,6 @@
 import type { GameSearchResult } from "../types.js";
 
-export function GameMedia({ game, size }: { game: GameSearchResult; size: "tiny" | "small" | "large" }) {
+export function GameMedia({ game, size }: { game: GameSearchResult; size: "tiny" | "small" | "cover" | "large" }) {
   const className = game.imageUrl ? `game-media ${size} has-image` : `game-media ${size}`;
 
   return (

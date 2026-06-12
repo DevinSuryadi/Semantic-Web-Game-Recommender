@@ -1,7 +1,8 @@
+import { useState, type CSSProperties } from "react";
 import type { GameDetail, PropertyGroup } from "../types.js";
 import { CategoryCard } from "../components/CategoryCard.js";
 import { GameMedia } from "../components/GameMedia.js";
-import { getSingleValue } from "../utils/game.js";
+import { getSingleValue, primaryGenre, releaseYear } from "../utils/game.js";
 
 export function GameInfoPage({
   detail,
@@ -25,15 +26,32 @@ export function GameInfoPage({
   }
 
   const description = detail.description ?? getSingleValue(detail.properties, "Deskripsi");
+  const mainGenre = primaryGenre(detail) || "Game";
+  const mainSubgenre = detail.subGenres[0] ?? "Subgenre belum tersedia";
+  const year = releaseYear(detail.releaseDate);
+  const heroStyle = detail.imageUrl
+    ? ({
+        "--game-info-bg": `url("${detail.imageUrl}")`
+      } as CSSProperties)
+    : undefined;
 
   return (
-    <section className="page-section">
-      <div className="info-hero">
-        <GameMedia game={detail} size="large" />
+    <section className="page-section game-info-section">
+      <div className={detail.imageUrl ? "info-hero has-background" : "info-hero"} style={heroStyle}>
+        <div className="info-cover-column">
+          <GameMedia game={detail} size="cover" />
+          <GameDescription description={description || "Deskripsi belum tersedia di RDF."} />
+        </div>
+
         <div className="info-copy">
           <p className="eyebrow">Game Info</p>
           <h1>{detail.title}</h1>
-          <p>{description || "Deskripsi belum tersedia di RDF."}</p>
+          <div className="info-badges" aria-label="Game summary">
+            <span>{mainGenre}</span>
+            <span>{mainSubgenre}</span>
+            <span>Year {year}</span>
+            <span>Release {detail.releaseDate ?? "-"}</span>
+          </div>
           <div className="info-actions">
             <div className="score-card">
               <strong>{detail.rating?.toFixed(1) ?? "-"}</strong>
@@ -67,5 +85,21 @@ export function GameInfoPage({
         </div>
       </section>
     </section>
+  );
+}
+
+function GameDescription({ description }: { description: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const canExpand = description.length > 150;
+
+  return (
+    <div className="info-description">
+      <p className={isExpanded || !canExpand ? "expanded" : ""}>{description}</p>
+      {canExpand && (
+        <button type="button" onClick={() => setIsExpanded((current) => !current)}>
+          {isExpanded ? "Less" : "More"}
+        </button>
+      )}
+    </div>
   );
 }
