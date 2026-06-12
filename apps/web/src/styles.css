@@ -943,7 +943,7 @@ p {
   min-height: 0;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto auto auto minmax(0, 1fr);
-  gap: 14px;
+  gap: 16px;
   align-items: start;
   overflow: hidden;
   margin-bottom: 0;
@@ -961,12 +961,14 @@ p {
   z-index: 0;
   content: "";
   background:
-    linear-gradient(90deg, rgba(17, 24, 32, 0.9), rgba(17, 24, 32, 0.48) 46%, rgba(17, 24, 32, 0.82)),
-    linear-gradient(0deg, rgba(17, 24, 32, 0.92), rgba(17, 24, 32, 0.24) 44%, rgba(17, 24, 32, 0.72)),
+    radial-gradient(circle at 24% 28%, rgba(168, 220, 59, 0.16), transparent 18rem),
+    radial-gradient(circle at 64% 34%, rgba(98, 190, 210, 0.18), transparent 24rem),
+    linear-gradient(90deg, rgba(17, 24, 32, 0.9), rgba(17, 24, 32, 0.44) 46%, rgba(17, 24, 32, 0.82)),
+    linear-gradient(0deg, rgba(17, 24, 32, 0.92), rgba(17, 24, 32, 0.2) 44%, rgba(17, 24, 32, 0.7)),
     var(--game-info-bg);
   background-position: top center;
   background-size: cover;
-  filter: saturate(1.35) contrast(1.08);
+  filter: saturate(1.5) contrast(1.1);
   transform: scale(1.04);
 }
 
@@ -976,8 +978,10 @@ p {
   z-index: 0;
   content: "";
   background:
-    radial-gradient(circle at 24% 18%, rgba(238, 245, 244, 0.11), transparent 18rem),
-    radial-gradient(circle at 70% 35%, rgba(168, 220, 59, 0.08), transparent 24rem);
+    radial-gradient(circle at 18% 18%, rgba(238, 245, 244, 0.11), transparent 16rem),
+    radial-gradient(circle at 58% 36%, rgba(168, 220, 59, 0.13), transparent 24rem),
+    radial-gradient(circle at 82% 18%, rgba(80, 180, 205, 0.14), transparent 22rem);
+  mix-blend-mode: screen;
   pointer-events: none;
 }
 
@@ -1013,7 +1017,8 @@ p {
 
 .info-copy {
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 12px;
   width: 100%;
   justify-content: stretch;
   align-self: stretch;
@@ -1027,7 +1032,6 @@ p {
   gap: 18px;
   align-items: start;
   width: 100%;
-  margin-bottom: 14px;
 }
 
 .info-title-row h1 {
@@ -1060,8 +1064,8 @@ p {
 
 .title-recommendation {
   justify-self: start;
-  align-self: stretch;
-  min-height: 72px;
+  align-self: start;
+  min-height: 46px;
   padding-right: 22px;
   padding-left: 22px;
 }
