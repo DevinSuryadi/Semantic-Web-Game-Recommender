@@ -943,7 +943,7 @@ p {
   min-height: 0;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto auto auto minmax(0, 1fr);
-  gap: 16px;
+  gap: 18px;
   align-items: start;
   overflow: hidden;
   margin-bottom: 0;
@@ -1133,6 +1133,8 @@ p {
   z-index: 1;
   display: flex;
   width: 100%;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .hero-metadata section {
@@ -1181,6 +1183,8 @@ p {
   display: grid;
   gap: 8px;
   width: 100%;
+  margin-top: 2px;
+  margin-bottom: 2px;
   padding: 0;
 }
 
@@ -1202,6 +1206,7 @@ p {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 10px;
+  margin-top: 2px;
   overflow: hidden;
 }
 

@@ -71,14 +71,15 @@ export function GameInfoPage({
   const qualityTier = getGroupValue(semanticGroups, "Quality Tier") || "Quality tier belum tersedia";
   const developer = getGroupValue(metadataGroups, "Developer") || "Developer belum tersedia";
   const releaseDate = formatReleaseDate(detail.releaseDate);
-  const ratingValue = (detail.rating?.toFixed(1) ?? getGroupValue(metadataGroups, "Rating")) || "-";
+  const ratingValue = formatRating(detail.rating?.toFixed(1) ?? getGroupValue(metadataGroups, "Rating"));
+  const playtimeValue = formatPlaytime(getGroupValue(metadataGroups, "Playtime"));
   const heroMetadata = [
     { label: "Developer", value: developer },
     { label: "Release date", value: releaseDate || "-" },
     { label: "Publisher", value: getGroupValue(metadataGroups, "Publisher") || "-" },
     { label: "Rating", value: ratingValue },
     { label: "Metacritic", value: getGroupValue(metadataGroups, "Metacritic") || "-" },
-    { label: "Playtime", value: getGroupValue(metadataGroups, "Playtime") || "-" }
+    { label: "Playtime", value: playtimeValue }
   ];
   const visibleSemanticGroups = semanticGroups.filter(
     (group) => group.values.length > 0 && group.name !== "Quality Tier" && group.name !== "Tag"
@@ -93,7 +94,7 @@ export function GameInfoPage({
     <section className="page-section game-info-section">
       <div className="game-info-toolbar">
         <button className="back-to-library" type="button" onClick={onBackToLibrary}>
-          <span aria-hidden="true">&lt;-</span>
+          <span aria-hidden="true">&larr; </span>
           Library
         </button>
 
@@ -149,6 +150,7 @@ export function GameInfoPage({
             <div className="info-action-row">
               <button className="primary-button title-recommendation" type="button" onClick={onOpenRecommendations}>
                 Game Recommendations
+                <span aria-hidden="true"> &rarr;</span>
               </button>
             </div>
           </div>
@@ -240,4 +242,12 @@ function formatReleaseDate(releaseDate?: string): string {
     month: "long",
     year: "numeric"
   }).format(date);
+}
+
+function formatRating(rating: string): string {
+  return rating ? `${rating} /5.0` : "-";
+}
+
+function formatPlaytime(playtime: string): string {
+  return playtime ? `${playtime} hours` : "-";
 }
