@@ -1,5 +1,6 @@
 const prefixes = `
 PREFIX gf: <http://example.org/gamefeel#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 `;
 
@@ -8,13 +9,24 @@ export function buildSearchGamesQuery(searchTerm: string): string {
 
   return `${prefixes}
 SELECT ?game ?title ?slug
+  (SAMPLE(?descriptionValue) AS ?description)
+  (SAMPLE(?ratingValue) AS ?rating)
+  (GROUP_CONCAT(DISTINCT ?genreLabel; separator="|") AS ?genres)
 WHERE {
   ?game a gf:Game ;
     gf:title ?title ;
     gf:slug ?slug .
 
+  OPTIONAL { ?game gf:description ?descriptionValue . }
+  OPTIONAL { ?game gf:rating ?ratingValue . }
+  OPTIONAL {
+    ?game gf:hasGenre ?genre .
+    ?genre rdfs:label ?genreLabel .
+  }
+
   FILTER(CONTAINS(LCASE(?title), LCASE(${safeTerm})))
 }
+GROUP BY ?game ?title ?slug
 ORDER BY ?title
 LIMIT 20`;
 }
@@ -23,7 +35,7 @@ export function buildGameDetailQuery(slug: string): string {
   const safeSlug = sparqlString(slug);
 
   return `${prefixes}
-SELECT ?game ?title ?slug ?predicate ?valueLabel
+SELECT ?game ?title ?slug ?predicate ?valueLabel (SAMPLE(?ratingValue) AS ?rating)
 WHERE {
   ?game a gf:Game ;
     gf:title ?title ;
@@ -31,11 +43,16 @@ WHERE {
 
   VALUES ?slug { ${safeSlug} }
 
+  OPTIONAL { ?game gf:rating ?ratingValue . }
+
   ?game ?predicate ?value .
   OPTIONAL { ?value rdfs:label ?label . }
 
+  FILTER(?predicate != rdf:type)
+
   BIND(COALESCE(?label, STR(?value)) AS ?valueLabel)
 }
+GROUP BY ?game ?title ?slug ?predicate ?valueLabel
 ORDER BY ?predicate ?valueLabel`;
 }
 
@@ -43,7 +60,9 @@ export function buildRecommendationsQuery(slug: string): string {
   const safeSlug = sparqlString(slug);
 
   return `${prefixes}
-SELECT ?game ?title ?slug (SUM(?weight) AS ?score) (GROUP_CONCAT(DISTINCT ?reason; separator=", ") AS ?reasons)
+SELECT ?game ?title ?slug
+  (SUM(?weight) AS ?score)
+  (GROUP_CONCAT(DISTINCT ?reason; separator="|") AS ?reasons)
 WHERE {
   ?input a gf:Game ;
     gf:slug ?inputSlug .

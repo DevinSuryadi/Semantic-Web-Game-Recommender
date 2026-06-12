@@ -11,6 +11,7 @@
     "db:push": "prisma db push",
     "seed:10": "tsx src/scripts/seedTenGames.ts",
     "rdf:10": "tsx src/scripts/generateRdf.ts",
+    "fuseki:reload": "tsx src/scripts/reloadFuseki.ts",
     "recommend:preview": "tsx src/scripts/previewRecommendations.ts"
   },
   "dependencies": {

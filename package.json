@@ -12,6 +12,7 @@
     "db:push": "pnpm --filter @gamefeel/api db:push",
     "seed:10": "pnpm --filter @gamefeel/api seed:10",
     "rdf:10": "pnpm --filter @gamefeel/api rdf:10",
+    "fuseki:reload": "pnpm --filter @gamefeel/api fuseki:reload",
     "recommend:preview": "pnpm --filter @gamefeel/api recommend:preview"
   },
   "devDependencies": {

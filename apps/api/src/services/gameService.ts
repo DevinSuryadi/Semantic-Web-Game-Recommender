@@ -9,6 +9,9 @@ export type GameSearchResult = {
   iri: string;
   title: string;
   slug: string;
+  description?: string;
+  rating?: number;
+  genres: string[];
 };
 
 export type GameDetail = GameSearchResult & {
@@ -57,7 +60,7 @@ export async function getRecommendations(slug: string): Promise<GameRecommendati
     ...toGameSearchResult(binding),
     score: Number(requiredValue(binding, "score")),
     reasons: requiredValue(binding, "reasons")
-      .split(", ")
+      .split("|")
       .filter(Boolean)
   }));
 }
@@ -66,7 +69,10 @@ function toGameSearchResult(binding: SparqlBinding): GameSearchResult {
   return {
     iri: requiredValue(binding, "game"),
     title: requiredValue(binding, "title"),
-    slug: requiredValue(binding, "slug")
+    slug: requiredValue(binding, "slug"),
+    description: optionalValue(binding, "description"),
+    rating: optionalNumber(binding, "rating"),
+    genres: optionalValue(binding, "genres")?.split("|").filter(Boolean) ?? []
   };
 }
 
@@ -80,10 +86,45 @@ function requiredValue(binding: SparqlBinding, key: string): string {
   return value;
 }
 
+function optionalValue(binding: SparqlBinding, key: string): string | undefined {
+  return binding[key]?.value;
+}
+
+function optionalNumber(binding: SparqlBinding, key: string): number | undefined {
+  const value = optionalValue(binding, key);
+  return value === undefined ? undefined : Number(value);
+}
+
 function readablePredicate(predicate: string): string {
   const localName = predicate.includes("#")
     ? predicate.split("#").at(-1)
     : predicate.split("/").at(-1);
 
-  return localName ?? predicate;
+  const labels: Record<string, string> = {
+    availableOn: "Platform",
+    description: "Deskripsi",
+    developedBy: "Developer",
+    hasArtStyle: "Art Style",
+    hasCombatStyle: "Combat Style",
+    hasDifficulty: "Difficulty",
+    hasGenre: "Genre",
+    hasMechanic: "Gameplay Mechanic",
+    hasMode: "Game Mode",
+    hasMood: "Mood",
+    hasPacing: "Pacing",
+    hasPerspective: "Perspective",
+    hasQualityTier: "Quality Tier",
+    hasSubGenre: "SubGenre",
+    hasTag: "Tag",
+    hasTheme: "Theme",
+    metacriticScore: "Metacritic",
+    playtime: "Playtime",
+    publishedBy: "Publisher",
+    rating: "Rating",
+    releaseDate: "Release Date",
+    slug: "Slug",
+    title: "Title"
+  };
+
+  return labels[localName ?? ""] ?? localName ?? predicate;
 }
