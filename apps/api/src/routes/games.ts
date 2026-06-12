@@ -6,7 +6,8 @@ export const gamesRouter = Router();
 gamesRouter.get("/search", async (request, response, next) => {
   try {
     const searchTerm = typeof request.query.q === "string" ? request.query.q : "";
-    const games = await searchGames(searchTerm);
+    const limit = typeof request.query.limit === "string" ? Number(request.query.limit) : undefined;
+    const games = await searchGames(searchTerm, limit);
     response.json({ data: games });
   } catch (error) {
     next(error);

@@ -4,15 +4,20 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 `;
 
-export function buildSearchGamesQuery(searchTerm: string): string {
+export function buildSearchGamesQuery(searchTerm: string, limit = 20): string {
   const safeTerm = sparqlString(searchTerm.trim());
+  const safeLimit = Number.isInteger(limit) && limit > 0 ? Math.min(limit, 100) : 20;
 
   return `${prefixes}
 SELECT ?game ?title ?slug
   (SAMPLE(?descriptionValue) AS ?description)
   (SAMPLE(?imageUrlValue) AS ?imageUrl)
+  (SAMPLE(?releaseDateValue) AS ?releaseDate)
   (SAMPLE(?ratingValue) AS ?rating)
   (GROUP_CONCAT(DISTINCT ?genreLabel; separator="|") AS ?genres)
+  (GROUP_CONCAT(DISTINCT ?subGenreLabel; separator="|") AS ?subGenres)
+  (GROUP_CONCAT(DISTINCT ?platformLabel; separator="|") AS ?platforms)
+  (GROUP_CONCAT(DISTINCT ?difficultyLabel; separator="|") AS ?difficulties)
 WHERE {
   ?game a gf:Game ;
     gf:title ?title ;
@@ -20,17 +25,30 @@ WHERE {
 
   OPTIONAL { ?game gf:description ?descriptionValue . }
   OPTIONAL { ?game gf:imageUrl ?imageUrlValue . }
+  OPTIONAL { ?game gf:releaseDate ?releaseDateValue . }
   OPTIONAL { ?game gf:rating ?ratingValue . }
   OPTIONAL {
     ?game gf:hasGenre ?genre .
     ?genre rdfs:label ?genreLabel .
+  }
+  OPTIONAL {
+    ?game gf:hasSubGenre ?subGenre .
+    ?subGenre rdfs:label ?subGenreLabel .
+  }
+  OPTIONAL {
+    ?game gf:availableOn ?platform .
+    ?platform rdfs:label ?platformLabel .
+  }
+  OPTIONAL {
+    ?game gf:hasDifficulty ?difficulty .
+    ?difficulty rdfs:label ?difficultyLabel .
   }
 
   FILTER(CONTAINS(LCASE(?title), LCASE(${safeTerm})))
 }
 GROUP BY ?game ?title ?slug
 ORDER BY ?title
-LIMIT 20`;
+LIMIT ${safeLimit}`;
 }
 
 export function buildGameDetailQuery(slug: string): string {
@@ -39,6 +57,7 @@ export function buildGameDetailQuery(slug: string): string {
   return `${prefixes}
 SELECT ?game ?title ?slug ?predicate ?valueLabel
   (SAMPLE(?imageUrlValue) AS ?imageUrl)
+  (SAMPLE(?releaseDateValue) AS ?releaseDate)
   (SAMPLE(?ratingValue) AS ?rating)
 WHERE {
   ?game a gf:Game ;
@@ -48,6 +67,7 @@ WHERE {
   VALUES ?slug { ${safeSlug} }
 
   OPTIONAL { ?game gf:imageUrl ?imageUrlValue . }
+  OPTIONAL { ?game gf:releaseDate ?releaseDateValue . }
   OPTIONAL { ?game gf:rating ?ratingValue . }
 
   ?game ?predicate ?value .
@@ -68,6 +88,7 @@ export function buildRecommendationsQuery(slug: string): string {
 SELECT ?game ?title ?slug
   (SAMPLE(?descriptionValue) AS ?description)
   (SAMPLE(?imageUrlValue) AS ?imageUrl)
+  (SAMPLE(?releaseDateValue) AS ?releaseDate)
   (SAMPLE(?ratingValue) AS ?rating)
   (SUM(?weight) AS ?score)
   (GROUP_CONCAT(DISTINCT ?reason; separator="|") AS ?reasons)
@@ -83,6 +104,7 @@ WHERE {
 
   OPTIONAL { ?game gf:description ?descriptionValue . }
   OPTIONAL { ?game gf:imageUrl ?imageUrlValue . }
+  OPTIONAL { ?game gf:releaseDate ?releaseDateValue . }
   OPTIONAL { ?game gf:rating ?ratingValue . }
 
   FILTER(?game != ?input)

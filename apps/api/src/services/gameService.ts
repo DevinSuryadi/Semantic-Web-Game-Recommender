@@ -11,8 +11,12 @@ export type GameSearchResult = {
   slug: string;
   description?: string;
   imageUrl?: string;
+  releaseDate?: string;
   rating?: number;
   genres: string[];
+  subGenres: string[];
+  platforms: string[];
+  difficulties: string[];
 };
 
 export type GameDetail = GameSearchResult & {
@@ -28,8 +32,8 @@ export type GameRecommendation = GameSearchResult & {
   reasons: string[];
 };
 
-export async function searchGames(searchTerm: string): Promise<GameSearchResult[]> {
-  const result = await runSelectQuery(buildSearchGamesQuery(searchTerm));
+export async function searchGames(searchTerm: string, limit?: number): Promise<GameSearchResult[]> {
+  const result = await runSelectQuery(buildSearchGamesQuery(searchTerm, limit));
   return result.results.bindings.map(toGameSearchResult);
 }
 
@@ -73,9 +77,17 @@ function toGameSearchResult(binding: SparqlBinding): GameSearchResult {
     slug: requiredValue(binding, "slug"),
     description: optionalValue(binding, "description"),
     imageUrl: optionalValue(binding, "imageUrl"),
+    releaseDate: optionalValue(binding, "releaseDate"),
     rating: optionalNumber(binding, "rating"),
-    genres: optionalValue(binding, "genres")?.split("|").filter(Boolean) ?? []
+    genres: splitBindingValue(binding, "genres"),
+    subGenres: splitBindingValue(binding, "subGenres"),
+    platforms: splitBindingValue(binding, "platforms"),
+    difficulties: splitBindingValue(binding, "difficulties")
   };
+}
+
+function splitBindingValue(binding: SparqlBinding, key: string): string[] {
+  return optionalValue(binding, key)?.split("|").filter(Boolean) ?? [];
 }
 
 function requiredValue(binding: SparqlBinding, key: string): string {
