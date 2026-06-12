@@ -26,8 +26,8 @@ export function GameInfoPage({
   }
 
   const description = detail.description ?? getSingleValue(detail.properties, "Deskripsi");
-  const mainGenre = primaryGenre(detail) || "Game";
-  const mainSubgenre = detail.subGenres[0] ?? "Subgenre belum tersedia";
+  const mainGenre = primaryGenre(detail) || getSingleValue(detail.properties, "Genre") || "Game";
+  const mainSubgenre = (detail.subGenres[0] ?? getSingleValue(detail.properties, "Subgenre")) || "Subgenre belum tersedia";
   const year = releaseYear(detail.releaseDate);
   const heroStyle = detail.imageUrl
     ? ({
@@ -38,25 +38,25 @@ export function GameInfoPage({
   return (
     <section className="page-section game-info-section">
       <div className={detail.imageUrl ? "info-hero has-background" : "info-hero"} style={heroStyle}>
+        <div className="top-right-rating score-card">
+          <strong>{detail.rating?.toFixed(1) ?? "-"}</strong>
+          <span>RAWG</span>
+        </div>
+
         <div className="info-cover-column">
           <GameMedia game={detail} size="cover" />
-          <GameDescription description={description || "Deskripsi belum tersedia di RDF."} />
         </div>
 
         <div className="info-copy">
-          <p className="eyebrow">Game Info</p>
           <h1>{detail.title}</h1>
           <div className="info-badges" aria-label="Game summary">
             <span>{mainGenre}</span>
             <span>{mainSubgenre}</span>
             <span>Year {year}</span>
-            <span>Release {detail.releaseDate ?? "-"}</span>
+            <span>{getSingleValue(detail.properties, "Game Mode") || "Singleplayer"}</span>
           </div>
+          <GameDescription description={description || "Deskripsi belum tersedia di RDF."} />
           <div className="info-actions">
-            <div className="score-card">
-              <strong>{detail.rating?.toFixed(1) ?? "-"}</strong>
-              <span>RAWG</span>
-            </div>
             <button className="primary-button" type="button" onClick={onOpenRecommendations}>
               Lihat Rekomendasi
             </button>

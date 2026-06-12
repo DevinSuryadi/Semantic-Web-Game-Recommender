@@ -884,7 +884,7 @@ p {
   position: relative;
   display: grid;
   min-height: 470px;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr);
   gap: 34px;
   align-items: center;
   overflow: hidden;
@@ -906,7 +906,7 @@ p {
     linear-gradient(90deg, rgba(17, 24, 32, 0.86), rgba(17, 24, 32, 0.45) 46%, rgba(17, 24, 32, 0.86)),
     linear-gradient(0deg, rgba(17, 24, 32, 0.9), rgba(17, 24, 32, 0.18) 42%, rgba(17, 24, 32, 0.78)),
     var(--game-info-bg);
-  background-position: center;
+  background-position: top center;
   background-size: cover;
   filter: saturate(1.1);
   transform: scale(1.04);
@@ -928,16 +928,26 @@ p {
 }
 
 .info-cover-column {
-  display: grid;
-  gap: 14px;
-  align-self: center;
+  align-self: start;
+  height: 420px;
+  width: 100%;
+}
+
+.info-cover-column .game-media,
+.info-cover-column img {
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  object-fit: fill;
 }
 
 .info-copy {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  max-width: 850px;
+  justify-content: flex-start;
+  align-self: start;
+  max-width: none;
 }
 
 .info-copy h1 {
@@ -970,21 +980,19 @@ p {
 .info-description {
   display: grid;
   gap: 8px;
-  border: 1px solid rgba(238, 245, 244, 0.12);
-  border-radius: 8px;
-  padding: 13px;
-  background: rgba(17, 24, 32, 0.72);
-  backdrop-filter: blur(10px);
+  padding: 0;
 }
 
 .info-description p {
   display: -webkit-box;
   overflow: hidden;
   margin: 0;
-  color: #cbd7db;
+  color: #ffffff;
   line-height: 1.55;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9), 0px 0px 8px rgba(0, 0, 0, 0.6);
+  text-align: justify;
 }
 
 .info-description p.expanded {
@@ -1018,6 +1026,13 @@ p {
   padding: 8px 12px;
   color: #111820;
   background: #a8dc3b;
+}
+
+.top-right-rating {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 1;
 }
 
 .score-card strong {
