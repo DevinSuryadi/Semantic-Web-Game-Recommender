@@ -10,6 +10,7 @@ export function buildSearchGamesQuery(searchTerm: string): string {
   return `${prefixes}
 SELECT ?game ?title ?slug
   (SAMPLE(?descriptionValue) AS ?description)
+  (SAMPLE(?imageUrlValue) AS ?imageUrl)
   (SAMPLE(?ratingValue) AS ?rating)
   (GROUP_CONCAT(DISTINCT ?genreLabel; separator="|") AS ?genres)
 WHERE {
@@ -18,6 +19,7 @@ WHERE {
     gf:slug ?slug .
 
   OPTIONAL { ?game gf:description ?descriptionValue . }
+  OPTIONAL { ?game gf:imageUrl ?imageUrlValue . }
   OPTIONAL { ?game gf:rating ?ratingValue . }
   OPTIONAL {
     ?game gf:hasGenre ?genre .
@@ -35,7 +37,9 @@ export function buildGameDetailQuery(slug: string): string {
   const safeSlug = sparqlString(slug);
 
   return `${prefixes}
-SELECT ?game ?title ?slug ?predicate ?valueLabel (SAMPLE(?ratingValue) AS ?rating)
+SELECT ?game ?title ?slug ?predicate ?valueLabel
+  (SAMPLE(?imageUrlValue) AS ?imageUrl)
+  (SAMPLE(?ratingValue) AS ?rating)
 WHERE {
   ?game a gf:Game ;
     gf:title ?title ;
@@ -43,6 +47,7 @@ WHERE {
 
   VALUES ?slug { ${safeSlug} }
 
+  OPTIONAL { ?game gf:imageUrl ?imageUrlValue . }
   OPTIONAL { ?game gf:rating ?ratingValue . }
 
   ?game ?predicate ?value .
@@ -61,6 +66,9 @@ export function buildRecommendationsQuery(slug: string): string {
 
   return `${prefixes}
 SELECT ?game ?title ?slug
+  (SAMPLE(?descriptionValue) AS ?description)
+  (SAMPLE(?imageUrlValue) AS ?imageUrl)
+  (SAMPLE(?ratingValue) AS ?rating)
   (SUM(?weight) AS ?score)
   (GROUP_CONCAT(DISTINCT ?reason; separator="|") AS ?reasons)
 WHERE {
@@ -72,6 +80,10 @@ WHERE {
   ?game a gf:Game ;
     gf:title ?title ;
     gf:slug ?slug .
+
+  OPTIONAL { ?game gf:description ?descriptionValue . }
+  OPTIONAL { ?game gf:imageUrl ?imageUrlValue . }
+  OPTIONAL { ?game gf:rating ?ratingValue . }
 
   FILTER(?game != ?input)
 

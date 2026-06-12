@@ -9,6 +9,7 @@ type GameSearchResult = {
   title: string;
   slug: string;
   description?: string;
+  imageUrl?: string;
   rating?: number;
   genres: string[];
 };
@@ -184,8 +185,12 @@ export function App() {
 
         <div className="hero-media">
           <p>Recommendations</p>
-          <div className="image-placeholder large">
-            <span>Thumbnail Game</span>
+          <div className={featuredGame?.imageUrl ? "image-placeholder large has-image" : "image-placeholder large"}>
+            {featuredGame?.imageUrl ? (
+              <img src={featuredGame.imageUrl} alt={featuredGame.title} />
+            ) : (
+              <span>Thumbnail Game</span>
+            )}
           </div>
           <div className="hero-tags">
             {activeRecommendation?.reasons.slice(0, 3).map((reason) => (
@@ -244,8 +249,8 @@ export function App() {
           {isLoadingDetail && <p className="notice loading">Memuat data dari SPARQL...</p>}
 
           <div className="detail-body">
-            <div className="image-placeholder small">
-              <span>Thumbnail Game</span>
+            <div className={detail?.imageUrl ? "image-placeholder small has-image" : "image-placeholder small"}>
+              {detail?.imageUrl ? <img src={detail.imageUrl} alt={detail.title} /> : <span>Thumbnail Game</span>}
             </div>
 
             <div className="category-grid top-categories">

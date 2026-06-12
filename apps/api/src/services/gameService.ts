@@ -10,6 +10,7 @@ export type GameSearchResult = {
   title: string;
   slug: string;
   description?: string;
+  imageUrl?: string;
   rating?: number;
   genres: string[];
 };
@@ -71,6 +72,7 @@ function toGameSearchResult(binding: SparqlBinding): GameSearchResult {
     title: requiredValue(binding, "title"),
     slug: requiredValue(binding, "slug"),
     description: optionalValue(binding, "description"),
+    imageUrl: optionalValue(binding, "imageUrl"),
     rating: optionalNumber(binding, "rating"),
     genres: optionalValue(binding, "genres")?.split("|").filter(Boolean) ?? []
   };

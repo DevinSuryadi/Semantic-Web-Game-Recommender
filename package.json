@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "dev": "pnpm --parallel --filter @gamefeel/api --filter @gamefeel/web dev",
+    "build": "pnpm --filter @gamefeel/api build && pnpm --filter @gamefeel/web build",
     "db:generate": "pnpm --filter @gamefeel/api db:generate",
     "db:push": "pnpm --filter @gamefeel/api db:push",
     "rawg:fetch": "pnpm --filter @gamefeel/api rawg:fetch",

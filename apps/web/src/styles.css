@@ -115,12 +115,23 @@ button {
   opacity: 0.9;
 }
 
+.image-placeholder.has-image::before,
+.image-placeholder.has-image::after {
+  display: none;
+}
+
 .image-placeholder span {
   position: relative;
   z-index: 1;
   margin-bottom: 10px;
   color: #283036;
   font-size: 12px;
+}
+
+.image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .image-placeholder.large {
