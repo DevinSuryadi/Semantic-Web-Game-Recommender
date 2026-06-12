@@ -197,7 +197,9 @@ export function App() {
           isLoading={isLoadingDetail}
           metadataGroups={metadataGroups}
           semanticGroups={semanticGroups}
+          onBackToLibrary={() => void openLibrary()}
           onOpenRecommendations={() => void openRecommendations()}
+          onSelectGame={(slug) => void openGameInfo(slug)}
         />
       )}
 
