@@ -889,13 +889,13 @@ p {
 .game-info-section {
   width: calc(100% - 48px);
   max-width: none;
-  height: calc(100vh - 68px);
+  min-height: calc(100vh - 68px);
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
   gap: 10px;
-  overflow: hidden;
+  overflow: visible;
   padding-top: 12px;
-  padding-bottom: 14px;
+  padding-bottom: 28px;
 }
 
 .game-info-toolbar {
@@ -966,7 +966,7 @@ p {
     linear-gradient(90deg, rgba(17, 24, 32, 0.9), rgba(17, 24, 32, 0.44) 46%, rgba(17, 24, 32, 0.82)),
     linear-gradient(0deg, rgba(17, 24, 32, 0.92), rgba(17, 24, 32, 0.2) 44%, rgba(17, 24, 32, 0.7)),
     var(--game-info-bg);
-  background-position: top center;
+  background-position: center center;
   background-size: cover;
   filter: saturate(1.5) contrast(1.1);
   transform: scale(1.04);

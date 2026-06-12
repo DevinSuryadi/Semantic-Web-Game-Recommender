@@ -152,13 +152,11 @@ export function LibraryPage({
       <section className="library-content">
         <div className="section-heading library-heading">
           <div>
-            <p className="eyebrow">Library</p>
-            <h1>Pustaka game</h1>
+            <h1 className="eyebrow">Library</h1>
           </div>
           <div className="library-actions">
             <div className="library-search-wrap">
               <label className="library-search">
-                <span>Search library</span>
                 <input
                   value={libraryQuery}
                   onChange={(event) => setLibraryQuery(event.target.value)}

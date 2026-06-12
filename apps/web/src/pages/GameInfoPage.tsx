@@ -245,9 +245,9 @@ function formatReleaseDate(releaseDate?: string): string {
 }
 
 function formatRating(rating: string): string {
-  return rating ? `${rating} /5.0` : "-";
+  return rating ? `${rating} / 5.0` : "-";
 }
 
 function formatPlaytime(playtime: string): string {
-  return playtime ? `${playtime} hours` : "-";
+  return playtime ? `± ${playtime} hours` : "-";
 }
