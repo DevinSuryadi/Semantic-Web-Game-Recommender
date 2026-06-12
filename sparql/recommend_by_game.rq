@@ -1,7 +1,13 @@
 PREFIX gf: <http://example.org/gamefeel#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?game ?title ?slug (SUM(?weight) AS ?score) (GROUP_CONCAT(DISTINCT ?reason; separator=", ") AS ?reasons)
+SELECT
+  ?game
+  ?title
+  ?slug
+  ?imageUrl
+  (SUM(?weight) AS ?score)
+  (GROUP_CONCAT(DISTINCT ?reason; separator=" | ") AS ?reasons)
 WHERE {
   ?input a gf:Game ;
     gf:slug ?inputSlug .
@@ -12,6 +18,8 @@ WHERE {
     gf:title ?title ;
     gf:slug ?slug .
 
+  OPTIONAL { ?game gf:imageUrl ?imageUrl . }
+
   FILTER(?game != ?input)
 
   {
@@ -19,7 +27,7 @@ WHERE {
     ?game gf:hasGenre ?shared .
     ?shared rdfs:label ?label .
     BIND(3 AS ?weight)
-    BIND(CONCAT("Genre: ", ?label) AS ?reason)
+    BIND(CONCAT("Genre: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -27,7 +35,7 @@ WHERE {
     ?game gf:hasSubGenre ?shared .
     ?shared rdfs:label ?label .
     BIND(3 AS ?weight)
-    BIND(CONCAT("SubGenre: ", ?label) AS ?reason)
+    BIND(CONCAT("SubGenre: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -35,7 +43,7 @@ WHERE {
     ?game gf:hasMood ?shared .
     ?shared rdfs:label ?label .
     BIND(2 AS ?weight)
-    BIND(CONCAT("Mood: ", ?label) AS ?reason)
+    BIND(CONCAT("Mood: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -43,7 +51,7 @@ WHERE {
     ?game gf:hasTheme ?shared .
     ?shared rdfs:label ?label .
     BIND(2 AS ?weight)
-    BIND(CONCAT("Theme: ", ?label) AS ?reason)
+    BIND(CONCAT("Theme: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -51,7 +59,7 @@ WHERE {
     ?game gf:hasMechanic ?shared .
     ?shared rdfs:label ?label .
     BIND(2 AS ?weight)
-    BIND(CONCAT("Mechanic: ", ?label) AS ?reason)
+    BIND(CONCAT("Mechanic: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -59,7 +67,7 @@ WHERE {
     ?game gf:hasMode ?shared .
     ?shared rdfs:label ?label .
     BIND(2 AS ?weight)
-    BIND(CONCAT("Mode: ", ?label) AS ?reason)
+    BIND(CONCAT("Mode: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -67,7 +75,7 @@ WHERE {
     ?game gf:hasCombatStyle ?shared .
     ?shared rdfs:label ?label .
     BIND(2 AS ?weight)
-    BIND(CONCAT("CombatStyle: ", ?label) AS ?reason)
+    BIND(CONCAT("CombatStyle: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -75,7 +83,7 @@ WHERE {
     ?game gf:hasDifficulty ?shared .
     ?shared rdfs:label ?label .
     BIND(1 AS ?weight)
-    BIND(CONCAT("Difficulty: ", ?label) AS ?reason)
+    BIND(CONCAT("Difficulty: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -83,7 +91,7 @@ WHERE {
     ?game gf:hasPacing ?shared .
     ?shared rdfs:label ?label .
     BIND(1 AS ?weight)
-    BIND(CONCAT("Pacing: ", ?label) AS ?reason)
+    BIND(CONCAT("Pacing: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -91,7 +99,7 @@ WHERE {
     ?game gf:hasPerspective ?shared .
     ?shared rdfs:label ?label .
     BIND(1 AS ?weight)
-    BIND(CONCAT("Perspective: ", ?label) AS ?reason)
+    BIND(CONCAT("Perspective: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -99,7 +107,7 @@ WHERE {
     ?game gf:hasArtStyle ?shared .
     ?shared rdfs:label ?label .
     BIND(1 AS ?weight)
-    BIND(CONCAT("ArtStyle: ", ?label) AS ?reason)
+    BIND(CONCAT("ArtStyle: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -107,15 +115,7 @@ WHERE {
     ?game gf:availableOn ?shared .
     ?shared rdfs:label ?label .
     BIND(1 AS ?weight)
-    BIND(CONCAT("Platform: ", ?label) AS ?reason)
-  }
-  UNION
-  {
-    ?input gf:hasTag ?shared .
-    ?game gf:hasTag ?shared .
-    ?shared rdfs:label ?label .
-    BIND(1 AS ?weight)
-    BIND(CONCAT("Tag: ", ?label) AS ?reason)
+    BIND(CONCAT("Platform: ", STR(?label)) AS ?reason)
   }
   UNION
   {
@@ -123,9 +123,17 @@ WHERE {
     ?game gf:hasQualityTier ?shared .
     ?shared rdfs:label ?label .
     BIND(1 AS ?weight)
-    BIND(CONCAT("QualityTier: ", ?label) AS ?reason)
+    BIND(CONCAT("QualityTier: ", STR(?label)) AS ?reason)
+  }
+  UNION
+  {
+    ?input gf:hasTag ?shared .
+    ?game gf:hasTag ?shared .
+    ?shared rdfs:label ?label .
+    BIND(1 AS ?weight)
+    BIND(CONCAT("Tag: ", STR(?label)) AS ?reason)
   }
 }
-GROUP BY ?game ?title ?slug
-ORDER BY DESC(?score) ?title
-LIMIT 5
+GROUP BY ?game ?title ?slug ?imageUrl
+ORDER BY DESC(?score) LCASE(STR(?title))
+LIMIT 10

@@ -1,7 +1,7 @@
 PREFIX gf: <http://example.org/gamefeel#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?game ?title ?slug ?predicate ?valueLabel
+SELECT ?game ?title ?slug ?predicate ?predicateName ?value ?valueLabel
 WHERE {
   ?game a gf:Game ;
     gf:title ?title ;
@@ -10,8 +10,11 @@ WHERE {
   VALUES ?slug { "elden-ring" }
 
   ?game ?predicate ?value .
-  OPTIONAL { ?value rdfs:label ?label . }
 
-  BIND(COALESCE(?label, STR(?value)) AS ?valueLabel)
+  OPTIONAL { ?predicate rdfs:label ?predicateLabel . }
+  OPTIONAL { ?value rdfs:label ?resourceLabel . }
+
+  BIND(COALESCE(?predicateLabel, STRAFTER(STR(?predicate), "#")) AS ?predicateName)
+  BIND(COALESCE(?resourceLabel, STR(?value)) AS ?valueLabel)
 }
-ORDER BY ?predicate ?valueLabel
+ORDER BY ?predicateName ?valueLabel
