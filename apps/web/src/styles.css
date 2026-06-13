@@ -3,6 +3,15 @@
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #eef5f4;
   background: #111820;
+  --accent: #a8dc3b;
+  --accent-soft: rgba(168, 220, 59, 0.18);
+  --border: rgba(238, 245, 244, 0.14);
+  --border-strong: rgba(238, 245, 244, 0.22);
+  --surface: rgba(17, 24, 32, 0.72);
+  --surface-soft: rgba(23, 37, 50, 0.72);
+  --surface-solid: #14212c;
+  --text: #eef5f4;
+  --muted: #9fb0b8;
 }
 
 * {
@@ -35,7 +44,7 @@ button {
 .app-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 20% 0%, rgba(168, 220, 59, 0.13), transparent 28rem),
+    radial-gradient(circle at 20% 0%, var(--accent-soft), transparent 28rem),
     #111820;
 }
 
@@ -48,7 +57,7 @@ button {
   justify-content: space-between;
   min-height: 68px;
   padding: 0 28px;
-  border-bottom: 1px solid rgba(238, 245, 244, 0.1);
+  border-bottom: 1px solid var(--border);
   background: rgba(17, 24, 32, 0.92);
   backdrop-filter: blur(14px);
 }
@@ -73,9 +82,9 @@ button {
   width: 24px;
   height: 24px;
   place-items: center;
-  border: 2px solid #a8dc3b;
+  border: 2px solid var(--accent);
   border-radius: 6px;
-  color: #a8dc3b;
+  color: var(--accent);
   line-height: 1;
 }
 
@@ -94,7 +103,7 @@ button {
 .nav-links button.active,
 .nav-links button:hover {
   color: #111820;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .home-page {
@@ -219,7 +228,7 @@ button {
 
 .eyebrow {
   margin: 0 0 12px;
-  color: #a8dc3b;
+  color: var(--accent);
   font-size: 25px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -244,7 +253,7 @@ p {
 .home-copy {
   width: min(680px, 100%);
   margin: 18px auto 28px;
-  color: #b7c3c8;
+  color: #c5d0d3;
   font-size: 17px;
   line-height: 1.65;
 }
@@ -262,10 +271,11 @@ p {
   gap: 10px;
   width: 100%;
   margin: 0;
-  border: 1px solid rgba(238, 245, 244, 0.16);
-  border-radius: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
   padding: 8px;
-  background: #1a2530;
+  background: var(--surface-soft);
+  backdrop-filter: blur(12px);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
 }
 
@@ -275,7 +285,7 @@ p {
   border-radius: 11px;
   padding: 16px 18px;
   color: #f7fbfb;
-  background: #111820;
+  background: var(--surface);
   outline: none;
 }
 
@@ -286,17 +296,24 @@ p {
 .primary-button,
 .secondary-button,
 .search-box button {
-  border: 0;
-  border-radius: 11px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   padding: 13px 18px;
   color: #111820;
   font-weight: 900;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .secondary-button {
+  border-color: var(--border);
   color: #e8eeee;
-  background: #253442;
+  background: var(--surface-soft);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.search-box button:hover {
+  filter: brightness(1.07);
 }
 
 .page-section {
@@ -347,23 +364,24 @@ p {
 }
 
 .library-search span {
-  color: #9fb0b8;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 800;
 }
 
 .library-search input {
   width: 100%;
-  border: 1px solid rgba(238, 245, 244, 0.14);
-  border-radius: 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   padding: 12px 13px;
   color: #f7fbfb;
-  background: #172532;
+  background: var(--surface-soft);
   outline: none;
 }
 
 .library-search input:focus {
   border-color: rgba(168, 220, 59, 0.8);
+  box-shadow: 0 0 0 3px rgba(168, 220, 59, 0.08);
 }
 
 .library-suggestions {
@@ -378,10 +396,10 @@ p {
 .library-filter-panel {
   overflow-y: auto;
   max-height: 100%;
-  border: 1px solid rgba(238, 245, 244, 0.1);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 18px;
-  background: #14212c;
+  background: var(--surface-solid);
   scrollbar-width: none;
   transform-origin: left center;
   transition: opacity 220ms ease, transform 260ms ease;
@@ -441,17 +459,18 @@ p {
 }
 
 .filter-panel-actions button {
-  border: 0;
+  border: 1px solid transparent;
   border-radius: 10px;
   padding: 10px 13px;
   color: #111820;
   font-weight: 900;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .panel-toggle-button {
   color: #e8eeee !important;
-  background: #253442 !important;
+  border-color: var(--border) !important;
+  background: var(--surface-soft) !important;
 }
 
 .filter-panel-actions button:hover {
@@ -464,15 +483,15 @@ p {
   left: 0;
   width: 46px;
   min-height: 150px;
-  border: 1px solid rgba(238, 245, 244, 0.1);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 14px 8px;
-  color: #a8dc3b;
+  color: var(--accent);
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   writing-mode: vertical-rl;
-  background: #14212c;
+  background: var(--surface-solid);
   opacity: 1;
   transform: translateX(0);
   transition:
@@ -488,7 +507,7 @@ p {
 }
 
 .filter-rail-button:hover {
-  border-color: #a8dc3b;
+  border-color: var(--accent);
 }
 
 .filter-field {
@@ -511,10 +530,10 @@ p {
   flex-wrap: wrap;
   gap: 7px;
   min-height: 46px;
-  border: 1px solid rgba(238, 245, 244, 0.14);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 7px;
-  background: #172532;
+  background: var(--surface-soft);
 }
 
 .selected-values.open {
@@ -530,7 +549,7 @@ p {
   color: #111820;
   font-size: 12px;
   font-weight: 900;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .selected-values span button {
@@ -584,7 +603,7 @@ p {
 .filter-dropdown button:hover,
 .filter-dropdown button.selected {
   color: #111820;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .star-filter {
@@ -598,11 +617,11 @@ p {
   width: 38px;
   height: 38px;
   place-items: center;
-  border: 1px solid rgba(238, 245, 244, 0.14);
+  border: 1px solid var(--border);
   border-radius: 8px;
   color: #6d7d86;
   font-weight: 900;
-  background: #172532;
+  background: var(--surface-soft);
 }
 
 .star-filter button span {
@@ -634,8 +653,8 @@ p {
 
 .star-filter button.active,
 .star-filter button:hover {
-  border-color: #a8dc3b;
-  color: #a8dc3b;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .year-range {
@@ -646,11 +665,11 @@ p {
 
 .year-range input {
   min-width: 0;
-  border: 1px solid rgba(238, 245, 244, 0.14);
+  border: 1px solid var(--border);
   border-radius: 9px;
   padding: 10px;
   color: #f7fbfb;
-  background: #172532;
+  background: var(--surface-soft);
   outline: none;
 }
 
@@ -670,7 +689,7 @@ p {
   padding: 9px 13px;
   color: #111820;
   font-weight: 900;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .game-grid {
@@ -716,11 +735,11 @@ p {
   max-height: min(340px, 32vh);
   overflow-y: auto;
   margin: 0;
-  border: 1px solid rgba(90, 126, 145, 0.7);
-  border-radius: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
   padding: 8px;
   text-align: left;
-  background: #10202c;
+  background: var(--surface-solid);
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
   scrollbar-width: none;
 }
@@ -744,7 +763,7 @@ p {
 }
 
 .suggestion-item:hover {
-  background: #172c3b;
+  background: rgba(23, 44, 59, 0.82);
 }
 
 .suggestion-item span {
@@ -782,13 +801,13 @@ p {
   gap: 0;
   width: 100%;
   min-width: 0;
-  border: 1px solid rgba(238, 245, 244, 0.1);
+  border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
   padding: 0;
   color: #f6fbfb;
   text-align: left;
-  background: transparent;
+  background: rgba(17, 24, 32, 0.36);
   contain: layout paint;
   content-visibility: auto;
   contain-intrinsic-size: 320px 300px;
@@ -796,6 +815,7 @@ p {
 
 .game-card:hover {
   border-color: rgba(168, 220, 59, 0.8);
+  background: rgba(17, 24, 32, 0.62);
 }
 
 .game-card span,
@@ -1264,9 +1284,10 @@ p {
 
 .panel {
   margin-top: 18px;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px;
-  background: #192530;
+  background: var(--surface-soft);
 }
 
 .category-grid,
@@ -1279,9 +1300,10 @@ p {
 .category-card,
 .metadata-card {
   min-width: 0;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 13px;
-  background: #111820;
+  background: var(--surface);
 }
 
 .category-card h3,
@@ -1312,7 +1334,7 @@ p {
   color: #111820;
   font-size: 12px;
   font-weight: 900;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .chip.muted {
@@ -1329,10 +1351,15 @@ p {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
   gap: 18px;
-  border: 1px solid rgba(238, 245, 244, 0.1);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 14px;
-  background: #192530;
+  background: var(--surface-soft);
+  backdrop-filter: blur(10px);
+}
+
+.recommendation-card:hover {
+  border-color: rgba(168, 220, 59, 0.5);
 }
 
 .recommendation-card p {
@@ -1358,14 +1385,14 @@ p {
   padding: 7px 10px;
   color: #111820;
   font-weight: 900;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 .text-button {
   border: 0;
   margin-top: 14px;
   padding: 0;
-  color: #a8dc3b;
+  color: var(--accent);
   font-weight: 900;
   background: transparent;
 }
@@ -1385,7 +1412,8 @@ p {
   width: min(720px, 100%);
   margin: 24px auto 0;
   color: #cdd7da;
-  background: #192530;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
 }
 
 .error {
@@ -1395,7 +1423,7 @@ p {
 
 .loading {
   color: #111820;
-  background: #a8dc3b;
+  background: var(--accent);
 }
 
 @media (max-width: 900px) {
