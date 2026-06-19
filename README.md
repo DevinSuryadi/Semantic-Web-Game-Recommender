@@ -61,45 +61,18 @@ pnpm fuseki:reload
 pnpm dev
 ```
 
-Jika ingin menjalankan manual tanpa script setup:
-
-```bash
-pnpm install
-pnpm db:generate
-pnpm kg:build
-```
-
-Default:
-- Web: `http://127.0.0.1:5173`
-- API: `http://localhost:3000`
-- Fuseki query endpoint: `http://localhost:3030/GameFeel/query`
-
-## Panduan Pengguna
-
-1. Buka halaman web.
-2. Cari game dari search bar di Home.
-3. Pilih game dari dropdown hasil pencarian.
-4. Baca informasi game di halaman Game Info.
-5. Klik `Game Recommendations` untuk melihat rekomendasi.
-6. Pilih card rekomendasi di sisi kiri.
-7. Lihat detail rekomendasi, alasan kemiripan, overall semantic overlap, spider chart, dan bar kemiripan tag.
-8. Klik `View game info` untuk membuka detail game rekomendasi.
-9. Gunakan menu `Library` untuk melihat semua game dan filter berdasarkan atribut.
+Frontend berjalan di Vite, sedangkan API berjalan pada port `3000` secara default.
 
 ## Contoh Hasil
 
-- `docs/examples/home.png`
-- `docs/examples/library.png`
-- `docs/examples/game-info.png`
-- `docs/examples/recommendations.png`
+Letakkan screenshot hasil aplikasi di folder `docs/examples`. Gambar akan otomatis tampil di README jika nama filenya sesuai.
 
-## Perintah Penting
-
-```bash
-pnpm dev              # menjalankan web dan API
-pnpm dev:web          # menjalankan frontend saja
-pnpm dev:api          # menjalankan backend saja
-pnpm build            # build API dan web
-pnpm kg:build         # generate ontology dan RDF
-pnpm fuseki:reload    # reload ontology + RDF ke Fuseki
-```
+| Halaman | Preview |
+| --- | --- |
+| Home | ![Home](docs/examples/home.png) |
+| Library | ![Library](docs/examples/library.png) |
+| Game Info | ![Game Info](docs/examples/game-info.png) |
+| Recommendations | ![Recommendations](docs/examples/recommendations.png) |
+| SPARQL Search | ![SPARQL Search](docs/examples/sparql-search.png) |
+| SPARQL Detail | ![SPARQL Detail](docs/examples/sparql-detail.png) |
+| SPARQL Recommendation | ![SPARQL Recommendation](docs/examples/sparql-recommendation.png) |
