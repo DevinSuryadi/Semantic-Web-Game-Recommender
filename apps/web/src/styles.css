@@ -1347,6 +1347,176 @@ p {
   gap: 16px;
 }
 
+.recommendations-section {
+  width: min(1480px, calc(100% - 48px));
+}
+
+.recommendation-source-card {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  padding: 14px;
+  background:
+    radial-gradient(circle at 35% 20%, rgba(168, 220, 59, 0.1), transparent 20rem),
+    var(--surface-soft);
+  backdrop-filter: blur(10px);
+}
+
+.recommendation-source-card h2,
+.recommendation-detail h2 {
+  margin: 0;
+  color: #f7fbfb;
+}
+
+.recommendation-source-card p {
+  margin: 12px 0 0;
+  color: #cbd7db;
+  line-height: 1.55;
+}
+
+.source-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.source-meta,
+.recommendation-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.source-meta span,
+.recommendation-meta-row span {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #e8f2f2;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(23, 37, 50, 0.52);
+}
+
+.recommendation-workspace {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.recommendation-sidebar {
+  display: grid;
+  gap: 10px;
+}
+
+.recommendation-option {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  color: #eef5f4;
+  text-align: left;
+  background: var(--surface);
+}
+
+.recommendation-option:hover,
+.recommendation-option.active {
+  border-color: rgba(168, 220, 59, 0.62);
+  background: var(--surface-soft);
+}
+
+.recommendation-option.active {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.recommendation-option span {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.recommendation-option strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recommendation-option small {
+  overflow: hidden;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recommendation-option em {
+  border-radius: 999px;
+  padding: 6px 8px;
+  color: #111820;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+  background: var(--accent);
+}
+
+.recommendation-detail {
+  display: grid;
+  grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+  gap: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  background:
+    radial-gradient(circle at 70% 15%, rgba(168, 220, 59, 0.12), transparent 22rem),
+    var(--surface-soft);
+  backdrop-filter: blur(10px);
+}
+
+.recommendation-detail .game-media.large {
+  min-height: 100%;
+  aspect-ratio: 16 / 10;
+}
+
+.recommendation-detail-copy {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.recommendation-detail-copy > p {
+  margin: 0;
+  color: #cbd7db;
+  line-height: 1.6;
+}
+
+.recommendation-reasons {
+  display: grid;
+  gap: 10px;
+}
+
+.recommendation-reasons h3 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .recommendation-card {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
@@ -1379,7 +1549,7 @@ p {
   color: #f7fbfb;
 }
 
-.recommendation-heading span {
+.recommendation-score {
   flex: none;
   border-radius: 999px;
   padding: 7px 10px;
@@ -1452,8 +1622,15 @@ p {
   }
 
   .info-hero,
-  .recommendation-card {
+  .recommendation-card,
+  .recommendation-source-card,
+  .recommendation-workspace,
+  .recommendation-detail {
     grid-template-columns: 1fr;
+  }
+
+  .recommendation-sidebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .info-hero-top {
@@ -1538,6 +1715,10 @@ p {
 
   .filters-collapsed .library-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .recommendation-sidebar {
+    grid-template-columns: 1fr;
   }
 
   .info-copy,
