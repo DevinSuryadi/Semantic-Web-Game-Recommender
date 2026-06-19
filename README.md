@@ -65,8 +65,6 @@ Frontend berjalan di Vite, sedangkan API berjalan pada port `3000` secara defaul
 
 ## Contoh Hasil
 
-Letakkan screenshot hasil aplikasi di folder `docs/examples`. Gambar akan otomatis tampil di README jika nama filenya sesuai.
-
 | Halaman | Preview |
 | --- | --- |
 | Home | ![Home](docs/examples/home.png) |
