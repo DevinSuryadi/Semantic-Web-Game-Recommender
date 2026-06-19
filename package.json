@@ -1,20 +1,23 @@
 {
-  "name": "gamefeel-kg",
-  "private": true,
-  "version": "0.1.0",
-  "type": "module",
-  "scripts": {
-    "dev": "pnpm --parallel --filter @gamefeel/api --filter @gamefeel/web dev",
-    "build": "pnpm --filter @gamefeel/api build && pnpm --filter @gamefeel/web build",
-    "db:generate": "pnpm --filter @gamefeel/api db:generate",
-    "db:push": "pnpm --filter @gamefeel/api db:push",
-    "rawg:fetch": "pnpm --filter @gamefeel/api rawg:fetch",
-    "rawg:to-csv": "pnpm --filter @gamefeel/api rawg:to-csv",
-    "ontology:generate": "pnpm --filter @gamefeel/api ontology:generate",
-    "rdf:generate": "pnpm --filter @gamefeel/api rdf:generate",
-    "kg:build": "pnpm ontology:generate && pnpm rdf:generate",
-    "fuseki:upload": "pnpm --filter @gamefeel/api fuseki:upload"
-  },
+    "name": "gamefeel-kg",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+      "dev": "pnpm --parallel --filter @gamefeel/api --filter @gamefeel/web dev",
+      "dev:api": "pnpm --filter @gamefeel/api dev",
+      "dev:web": "pnpm --filter @gamefeel/web dev",
+      "build": "pnpm --filter @gamefeel/api build && pnpm --filter @gamefeel/web build",
+      "db:generate": "pnpm --filter @gamefeel/api db:generate",
+      "db:push": "pnpm --filter @gamefeel/api db:push",
+      "rawg:fetch": "pnpm --filter @gamefeel/api rawg:fetch",
+      "rawg:to-csv": "pnpm --filter @gamefeel/api rawg:to-csv",
+      "ontology:generate": "pnpm --filter @gamefeel/api ontology:generate",
+      "rdf:generate": "pnpm --filter @gamefeel/api rdf:generate",
+      "kg:build": "pnpm ontology:generate && pnpm rdf:generate",
+      "fuseki:upload": "pnpm --filter @gamefeel/api fuseki:upload",
+      "fuseki:reload": "pnpm --filter @gamefeel/api fuseki:reload"
+    },
   "devDependencies": {
     "typescript": "5.9.3"
   }

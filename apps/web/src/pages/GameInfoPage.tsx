@@ -167,6 +167,8 @@ export function GameInfoPage({
 
         <GameDescription description={description || "Deskripsi belum tersedia di RDF."} />
 
+        <FeaturePullGrid groups={semanticGroups} />
+
         <section className="semantic-summary">
           {visibleSemanticGroups.map((group) => (
             <section className="semantic-summary-card" key={group.name}>
@@ -186,6 +188,112 @@ function GameDescription({ description }: { description: string }) {
       <p>{trimDescription(description)}</p>
     </div>
   );
+}
+
+type FeaturePullPanel = {
+  groups: string[];
+  title: string;
+  tone: "blue" | "rose" | "violet" | "green";
+};
+
+type FeaturePullItem = {
+  label: string;
+  score: number;
+};
+
+const featurePullPanels: FeaturePullPanel[] = [
+  {
+    title: "mechanics",
+    tone: "blue",
+    groups: ["Gameplay Mechanic", "Combat Style", "Perspective"]
+  },
+  {
+    title: "narrative",
+    tone: "rose",
+    groups: ["Theme", "SubGenre", "Tag"]
+  },
+  {
+    title: "vibe",
+    tone: "violet",
+    groups: ["Mood", "Art Style", "Difficulty"]
+  },
+  {
+    title: "structure loop",
+    tone: "green",
+    groups: ["Game Mode", "Pacing", "Platform"]
+  }
+];
+
+function FeaturePullGrid({ groups }: { groups: PropertyGroup[] }) {
+  return (
+    <section className="feature-pull-grid" aria-label="Semantic feature pull">
+      {featurePullPanels.map((panel) => {
+        const items = buildFeaturePullItems(groups, panel.groups);
+        const pull = calculatePull(items);
+
+        return (
+          <section className={`feature-pull-card ${panel.tone}`} key={panel.title}>
+            <div className="feature-pull-heading">
+              <h2>{panel.title}</h2>
+              <span>{pull}% pull</span>
+            </div>
+
+            <div className="feature-pull-list">
+              {items.map((item) => (
+                <div className="feature-pull-row" key={`${panel.title}-${item.label}`}>
+                  <div className="feature-pull-bar" style={{ width: `${Math.max(14, item.score * 2)}%` }}>
+                    <strong>{formatFeatureLabel(item.label)}</strong>
+                  </div>
+                  <span>{item.score}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </section>
+  );
+}
+
+function buildFeaturePullItems(groups: PropertyGroup[], names: string[]): FeaturePullItem[] {
+  const items = names.flatMap((name, groupIndex) => {
+    const group = groups.find((currentGroup) => currentGroup.name === name);
+
+    return (group?.values ?? []).map((value, valueIndex) => ({
+      label: value,
+      score: clampScore(50 - groupIndex * 7 - valueIndex * 5)
+    }));
+  });
+
+  if (items.length === 0) {
+    return [{ label: "not available", score: 0 }];
+  }
+
+  return items
+    .sort((left, right) => right.score - left.score || left.label.localeCompare(right.label))
+    .slice(0, 3);
+}
+
+function calculatePull(items: FeaturePullItem[]): number {
+  const scoredItems = items.filter((item) => item.score > 0);
+
+  if (scoredItems.length === 0) {
+    return 0;
+  }
+
+  return Math.round(scoredItems.reduce((total, item) => total + item.score, 0) / scoredItems.length);
+}
+
+function clampScore(score: number): number {
+  return Math.max(25, Math.min(50, score));
+}
+
+function formatFeatureLabel(value: string): string {
+  return value
+    .replaceAll("-", " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
 }
 
 function trimDescription(description: string): string {
