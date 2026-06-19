@@ -5,7 +5,7 @@ import { config } from "../config.js";
 const rootDir = resolve(import.meta.dirname, "../../../..");
 const ttlFiles = [
   resolve(rootDir, "ontology/gamefeel_ontology.ttl"),
-  resolve(rootDir, "rdf/gamefeel_10_games.ttl")
+  resolve(rootDir, "rdf/gamefeel_data.ttl")
 ];
 
 async function main() {
