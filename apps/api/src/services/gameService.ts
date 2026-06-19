@@ -1,0 +1,144 @@
+import { runSelectQuery, type SparqlBinding } from "../sparql/client.js";
+import {
+  buildGameDetailQuery,
+  buildRecommendationsQuery,
+  buildSearchGamesQuery
+} from "../sparql/queries.js";
+
+export type GameSearchResult = {
+  iri: string;
+  title: string;
+  slug: string;
+  description?: string;
+  imageUrl?: string;
+  releaseDate?: string;
+  rating?: number;
+  genres: string[];
+  subGenres: string[];
+  platforms: string[];
+  difficulties: string[];
+};
+
+export type GameDetail = GameSearchResult & {
+  properties: Array<{
+    predicate: string;
+    name: string;
+    value: string;
+  }>;
+};
+
+export type GameRecommendation = GameSearchResult & {
+  score: number;
+  reasons: string[];
+};
+
+export async function searchGames(searchTerm: string, limit?: number): Promise<GameSearchResult[]> {
+  const result = await runSelectQuery(buildSearchGamesQuery(searchTerm, limit));
+  return result.results.bindings.map(toGameSearchResult);
+}
+
+export async function getGameDetail(slug: string): Promise<GameDetail | null> {
+  const result = await runSelectQuery(buildGameDetailQuery(slug));
+  const [first] = result.results.bindings;
+
+  if (!first) {
+    return null;
+  }
+
+  return {
+    ...toGameSearchResult(first),
+    properties: result.results.bindings.map((binding) => {
+      const predicate = requiredValue(binding, "predicate");
+      return {
+        predicate,
+        name: readablePredicate(predicate),
+        value: requiredValue(binding, "valueLabel")
+      };
+    })
+  };
+}
+
+export async function getRecommendations(slug: string): Promise<GameRecommendation[]> {
+  const result = await runSelectQuery(buildRecommendationsQuery(slug));
+
+  return result.results.bindings.map((binding) => ({
+    ...toGameSearchResult(binding),
+    score: Number(requiredValue(binding, "score")),
+    reasons: requiredValue(binding, "reasons")
+      .split("|")
+      .filter(Boolean)
+  }));
+}
+
+function toGameSearchResult(binding: SparqlBinding): GameSearchResult {
+  return {
+    iri: requiredValue(binding, "game"),
+    title: requiredValue(binding, "title"),
+    slug: requiredValue(binding, "slug"),
+    description: optionalValue(binding, "description"),
+    imageUrl: optionalValue(binding, "imageUrl"),
+    releaseDate: optionalValue(binding, "releaseDate"),
+    rating: optionalNumber(binding, "rating"),
+    genres: splitBindingValue(binding, "genres"),
+    subGenres: splitBindingValue(binding, "subGenres"),
+    platforms: splitBindingValue(binding, "platforms"),
+    difficulties: splitBindingValue(binding, "difficulties")
+  };
+}
+
+function splitBindingValue(binding: SparqlBinding, key: string): string[] {
+  return optionalValue(binding, key)?.split("|").filter(Boolean) ?? [];
+}
+
+function requiredValue(binding: SparqlBinding, key: string): string {
+  const value = binding[key]?.value;
+
+  if (value === undefined) {
+    throw new Error(`Missing SPARQL binding: ${key}`);
+  }
+
+  return value;
+}
+
+function optionalValue(binding: SparqlBinding, key: string): string | undefined {
+  return binding[key]?.value;
+}
+
+function optionalNumber(binding: SparqlBinding, key: string): number | undefined {
+  const value = optionalValue(binding, key);
+  return value === undefined ? undefined : Number(value);
+}
+
+function readablePredicate(predicate: string): string {
+  const localName = predicate.includes("#")
+    ? predicate.split("#").at(-1)
+    : predicate.split("/").at(-1);
+
+  const labels: Record<string, string> = {
+    availableOn: "Platform",
+    description: "Deskripsi",
+    developedBy: "Developer",
+    hasArtStyle: "Art Style",
+    hasCombatStyle: "Combat Style",
+    hasDifficulty: "Difficulty",
+    hasGenre: "Genre",
+    hasMechanic: "Gameplay Mechanic",
+    hasMode: "Game Mode",
+    hasMood: "Mood",
+    hasPacing: "Pacing",
+    hasPerspective: "Perspective",
+    hasQualityTier: "Quality Tier",
+    hasSubGenre: "SubGenre",
+    hasTag: "Tag",
+    hasTheme: "Theme",
+    metacriticScore: "Metacritic",
+    playtime: "Playtime",
+    publishedBy: "Publisher",
+    rating: "Rating",
+    releaseDate: "Release Date",
+    slug: "Slug",
+    title: "Title"
+  };
+
+  return labels[localName ?? ""] ?? localName ?? predicate;
+}

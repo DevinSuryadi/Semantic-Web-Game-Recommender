@@ -1,0 +1,18 @@
+# GameFeel KG requirements
+#
+# Project ini bukan project Python, jadi file ini tidak dijalankan dengan pip.
+# Dependency JavaScript di-install melalui:
+#   pnpm install
+#
+# Setup otomatis:
+#   Windows: powershell -ExecutionPolicy Bypass -File requirements.ps1
+#   macOS/Linux: bash requirements.sh
+#
+# Environment yang harus tersedia:
+# - Node.js >= 20
+# - pnpm >= 9
+# - Java JDK >= 17
+# - Apache Jena Fuseki
+
+# Optional:
+# - Protege

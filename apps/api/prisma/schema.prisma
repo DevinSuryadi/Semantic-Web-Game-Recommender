@@ -22,10 +22,28 @@ model RawgGame {
   developersJson String    @default("[]")
   publishersJson String    @default("[]")
   tagsJson       String    @default("[]")
-  rawJson        String    @default("{}")
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
+  semanticMappings SemanticMapping[]
+
   @@index([title])
   @@index([slug])
+}
+
+model SemanticMapping {
+  id         Int      @id @default(autoincrement())
+  gameRawgId Int
+  dimension  String
+  value      String
+  source     String
+  confidence Int      @default(1)
+  evidence   String?
+  createdAt  DateTime @default(now())
+
+  game RawgGame @relation(fields: [gameRawgId], references: [rawgId], onDelete: Cascade)
+
+  @@unique([gameRawgId, dimension, value])
+  @@index([dimension, value])
+  @@index([source])
 }
