@@ -73,6 +73,3 @@ Letakkan screenshot hasil aplikasi di folder `docs/examples`. Gambar akan otomat
 | Library | ![Library](docs/examples/library.png) |
 | Game Info | ![Game Info](docs/examples/game-info.png) |
 | Recommendations | ![Recommendations](docs/examples/recommendations.png) |
-| SPARQL Search | ![SPARQL Search](docs/examples/sparql-search.png) |
-| SPARQL Detail | ![SPARQL Detail](docs/examples/sparql-detail.png) |
-| SPARQL Recommendation | ![SPARQL Recommendation](docs/examples/sparql-recommendation.png) |
